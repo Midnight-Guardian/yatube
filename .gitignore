@@ -1,8 +1,7 @@
 
 media/
-.env
+Dock/
 .venv
 env/
->>>>>>> origin/main1
 ../venv/
 
