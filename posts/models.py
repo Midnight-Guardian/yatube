@@ -3,6 +3,7 @@ from django.db import models
 User = get_user_model()
 # Create your models here.
 
+
 class Group(models.Model):
     '''Creating groups model'''
     title = models.CharField("Title", max_length=200)
@@ -11,6 +12,7 @@ class Group(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Post(models.Model):
     '''Creating posts model'''
@@ -22,6 +24,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
     def __str__(self):
         return self.title
+
 
 class Comment(models.Model):
     '''Creating comments model'''

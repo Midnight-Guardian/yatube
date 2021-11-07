@@ -9,10 +9,8 @@ from .forms import PostForm, CommentForm
 from django.core.paginator import Paginator
 
 
-
-
-
 class PostsList(LoginRequiredMixin, View):
+    """Posts List View"""
     def get(self, request, slug=None):
         if slug is not None:
             post_list = Post.objects.filter(group__slug=slug)
@@ -27,9 +25,11 @@ class PostsList(LoginRequiredMixin, View):
 
 
 class NewPost(LoginRequiredMixin, View):
+    """New Post Creation"""
     def get(self, request):
         form = PostForm()
         return render(request, 'posts/new_post.html', {"form": form, "mode": "add"})
+
     def post(self, request):
         form = PostForm(request.POST)
         if form.is_valid():
@@ -41,6 +41,7 @@ class NewPost(LoginRequiredMixin, View):
             return render(request, 'posts/new_post.html', {'form': form, "mode": "add"})
 
 class Profile(View):
+    """Profile View"""
     def get(self, request, username):
         profile = get_object_or_404(User, username=username)
         post_list = Post.objects.filter(author=profile).order_by("-pub_date")
@@ -56,6 +57,7 @@ class Profile(View):
                       )
 
 class Post_View(View):
+    """Post Detail View"""
     def get(self, request, username, post_id):
         post = get_object_or_404(Post, id=post_id)
         post_list = Post.objects.filter(author__username=username)
@@ -70,7 +72,10 @@ class Post_View(View):
                                                         'form': form,
                                                       }
                       )
+
+
 class Post_Edit(LoginRequiredMixin, View):
+    """Post Edit View"""
     def get(self, request, username, post_id):
         if request.user.username != username:
            return redirect('post', username=username, post_id=post_id)
@@ -86,11 +91,14 @@ class Post_Edit(LoginRequiredMixin, View):
             return redirect('post', username=username, post_id=post_id)
         return render(request, 'new_post', {'form': form})
 
+
 class AddComment(LoginRequiredMixin, View):
+    """Comment Creation View"""
     def get(self, request, username, post_id):
         post = get_object_or_404(Post, id=post_id)
         form = CommentForm()
         return render(request, 'posts/comments.html', {"form": form, "post": post})
+
     def post(self, request, username, post_id):
         post = get_object_or_404(Post, id=post_id)
         print(post)
